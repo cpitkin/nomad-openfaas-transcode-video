@@ -1,0 +1,15 @@
+{
+  "name": "transcode_video",
+  "version": "0.1.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Charlie Pitkin <cpitkin@protonmail.ch>",
+  "license": "ISC",
+  "dependencies": {
+    "request": "^2.83.0"
+  }
+}
