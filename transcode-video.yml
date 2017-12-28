@@ -12,8 +12,6 @@ functions:
       cpu: 500
     labels:
       datacenters: rapture
-    environment:
-      SLACK_TOKEN: ${SLACK_TOKEN}
   slack-status:
     lang: node
     handler: ./slack-status

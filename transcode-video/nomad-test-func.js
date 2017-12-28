@@ -2,6 +2,7 @@
 
 const request = require('request')
 const util = require('util')
+const randomize = require('randomatic')
 
 let req = {}
 req.Key = 'transcode/movies/Batman and Harley Quinn (2017).mkv'
@@ -16,7 +17,6 @@ let options = {
 
 let jobTemplate = {
   Job: {
-    ID: 'vt',
     Name: 'video-transcode',
     Type: 'batch',
     Priority: 10,
@@ -90,14 +90,10 @@ function replaceValues (job) {
     let er = 'Incorrect media type. Should be one of tv or movies'
     console.error(er)
   }
-  args.push('&&')
-  args.push('curl')
-  args.push('--data')
-  args.push('transcodeStatus=complete&fileName=' + req.s3.object.key)
-  args.push('http://faas.rapture:8080/function/slack')
 
-  job.Job.TaskGroups[0].Tasks[0].Config.args = []
-  job.Job.TaskGroups[0].Tasks[0].Config.args.push(args)
+  job.Job.TaskGroups[0].Tasks[0].Config.args = args
+  job.Job.ID = 'vt-' + randomize('a', 10)
+
   console.log(util.inspect(job, { showHidden: false, depth: null }))
   // startJob(job)
 }

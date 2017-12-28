@@ -1,6 +1,7 @@
 'use strict'
 
 const request = require('request')
+const randomize = require('randomatic')
 
 module.exports = (context, callback) => {
   let req = JSON.parse(context)
@@ -61,7 +62,7 @@ module.exports = (context, callback) => {
     request.post(options,
       function (error, response, body) {
         if (error) callback(error, null)
-        callback(null, response)
+        callback(null, JSON.stringify(response))
       }
     )
   }
@@ -83,14 +84,9 @@ module.exports = (context, callback) => {
       let er = 'Incorrect media type. Should be one of tv or movies'
       callback(er, null)
     }
-    args.push('&&')
-    args.push('curl')
-    args.push('--data')
-    args.push('transcodeStatus=complete&fileName=' + req.Records[0].s3.object.key)
-    args.push('http://faas.rapture:8080/function/slack-status')
 
-    job.Job.TaskGroups[0].Tasks[0].Config.args = []
-    job.Job.TaskGroups[0].Tasks[0].Config.args.push(args)
+    job.Job.TaskGroups[0].Tasks[0].Config.args = args
+    job.Job.ID = 'vt-' + randomize('a', 10)
 
     startJob(job)
   }
