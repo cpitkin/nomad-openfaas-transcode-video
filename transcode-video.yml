@@ -12,6 +12,15 @@ functions:
       cpu: 500
     labels:
       datacenters: rapture
+  delete-video:
+    lang: node
+    handler: ./delete-video
+    image: delete-video
+    labels:
+      datacenters: rapture
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
   slack-status:
     lang: node
     handler: ./slack-status

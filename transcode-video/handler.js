@@ -16,7 +16,7 @@ module.exports = (context, callback) => {
       ID: 'vt',
       Name: 'video-transcode',
       Type: 'batch',
-      Priority: 10,
+      Priority: 60,
       Datacenters: [
         'rapture'
       ],

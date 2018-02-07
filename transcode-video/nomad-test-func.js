@@ -5,10 +5,10 @@ const util = require('util')
 const randomize = require('randomatic')
 
 let req = {}
-req.Key = 'transcode/movies/Batman and Harley Quinn (2017).mkv'
+req.Key = 'transcode/tv/Pushing Daisies S01E01.mkv'
 req.s3 = {}
 req.s3.object = {}
-req.s3.object.key = 'Batman and Harley Quinn (2017).mkv'
+req.s3.object.key = 'Pushing Daisies S01E01.mkv'
 
 let options = {
   url: 'http://nomad.rapture:4646/v1/jobs',
