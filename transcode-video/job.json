@@ -17,8 +17,8 @@
           "image": "cpitkin/video_transcode",
           "volumes": [
             "minio:/minio",
-            "tv:/tv",
-            "movies:/movies"
+            "media/tv:/tv",
+            "media/movies:/movies"
           ],
           "command": "transcode-video",
           "args": []

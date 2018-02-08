@@ -95,7 +95,7 @@ function replaceValues (job) {
   job.Job.ID = 'vt-' + randomize('a', 10)
 
   console.log(util.inspect(job, { showHidden: false, depth: null }))
-  // startJob(job)
+  startJob(job)
 }
 
 replaceValues(jobTemplate)

@@ -12,14 +12,3 @@ functions:
       cpu: 500
     labels:
       datacenters: rapture
-  slack-status:
-    lang: node
-    handler: ./slack-status
-    image: cpitkin/slack-status
-    limits:
-      memory: 512
-      cpu: 500
-    labels:
-      datacenters: rapture
-    environment:
-      SLACK_TOKEN: ${SLACK_TOKEN}
