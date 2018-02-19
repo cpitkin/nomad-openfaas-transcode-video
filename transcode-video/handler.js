@@ -28,28 +28,14 @@ module.exports = (context, callback) => {
           Driver: 'docker',
           Config: {
             image: 'cpitkin/video_transcode',
-            mounts: [
-              {
-                target: '/minio',
-                source: 'minio',
-                readonly: false
-              },
-              {
-                target: '/tv',
-                source: 'tv',
-                readonly: false
-              },
-              {
-                target: '/movies',
-                source: 'movies',
-                readonly: false
-              }
+            volumes: [
+              '/transcode:/minio'
             ],
             command: 'transcode-video'
           },
           Resources: {
             CPU: 5000,
-            MemoryMB: 4096
+            MemoryMB: 2048
           }
         }]
       }]
@@ -69,21 +55,29 @@ module.exports = (context, callback) => {
 
   function replaceValues (job) {
     let args = []
-    args.push('/minio/' +
-    req.Key.replace(' ', '\ ').replace('(', '\(').replace(')', '\)'))
+    let filename = req.Key.replace(' ', '\ ').replace('(', '\(').replace(')', '\)')
+    args.push(`/minio/transcode/${filename}`)
+    
 
     args.push('--no-log')
     args.push('--output')
+    let completePath = ""
 
     let path = req.Key.split('/')
     if (path[1] === 'movies') {
-      args.push('/movies')
+      args.push('/minio/complete/movies')
+      completePath = `/minio/complete/movies/${filename}`
     } else if (path[1] === 'tv') {
-      args.push('/tv')
+      args.push('/minio/complete/tv')
+      completePath = `/minio/complete/tv/${filename}`
     } else {
-      let er = 'Incorrect media type. Should be one of tv or movies'
+      let er = 'Incorrect media folder. Should be one of tv or movies'
       callback(er, null)
     }
+
+    funcCall = `&& curl -H "Content-Type: application/json" -X POST -d '{"file":"${completePath}" http://faas.rapture:8080/function/media-upload`
+
+    args.concat(funcCall.split(' '))
 
     job.Job.TaskGroups[0].Tasks[0].Config.args = args
     job.Job.ID = 'vt-' + randomize('a', 10)
